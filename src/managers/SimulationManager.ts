@@ -71,6 +71,24 @@ export class SimulationManager {
       componentData.y,
       textureKey
     );
+
+    // Scale pipes and nodes to consistent sizes
+    if (componentData.type === "pipe") {
+      // Set all pipes to the same display size regardless of original image size
+      const targetWidth = 150;
+      const targetHeight = 90;
+
+      // Calculate scale to fit the target size while maintaining aspect ratio
+      const scaleX = targetWidth / sprite.width;
+      const scaleY = targetHeight / sprite.height;
+      const scale = Math.min(scaleX, scaleY); // Use the smaller scale to fit within bounds
+
+      sprite.setScale(scale);
+    } else if (componentData.type === "node") {
+      sprite.setScale(1.0); // Keep nodes at full size or adjust as needed
+      sprite.setDisplaySize(60, 60); // Fixed size for consistent nodes/valves
+    }
+
     sprite.setInteractive({ useHandCursor: true });
     return sprite;
   }
@@ -139,7 +157,15 @@ export class SimulationManager {
 
     const node = component as INode;
     node.flowActive = !node.flowActive;
+    
+    // Store the current display size before changing texture
+    const currentWidth = node.sprite.displayWidth;
+    const currentHeight = node.sprite.displayHeight;
+    
     node.sprite.setTexture(node.flowActive ? "node_on" : "node_off");
+    
+    // Restore the display size after changing texture
+    node.sprite.setDisplaySize(currentWidth, currentHeight);
 
     AnalyticsLogger.logEvent({
       timestamp: Date.now(),

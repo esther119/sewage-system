@@ -41,7 +41,10 @@ export class InputManager {
       if (component) {
         this.hoveredComponent = component;
         gameObject.setTint(0xffff88);
-        gameObject.setScale(1.1);
+        // Store the original scale and increase it slightly
+        const originalScale = gameObject.getData('originalScale') || gameObject.scale;
+        gameObject.setData('originalScale', originalScale);
+        gameObject.setScale(originalScale * 1.1);
       }
     }
   }
@@ -53,7 +56,11 @@ export class InputManager {
     if (gameObject instanceof Phaser.GameObjects.Sprite) {
       this.hoveredComponent = null;
       gameObject.clearTint();
-      gameObject.setScale(1.0);
+      // Restore the original scale
+      const originalScale = gameObject.getData('originalScale');
+      if (originalScale) {
+        gameObject.setScale(originalScale);
+      }
     }
   }
 

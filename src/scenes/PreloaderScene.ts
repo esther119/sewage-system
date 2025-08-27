@@ -70,9 +70,15 @@ export class PreloaderScene extends Phaser.Scene {
   }
 
   loadAssets(): void {
-    this.createPlaceholderAssets();
-
+    // Load actual background image first
     this.load.image("background", "assets/images/background.png");
+    
+    // Create placeholders for other assets that don't exist yet
+    this.load.on('filecomplete-image-background', () => {
+      console.log('Background image loaded successfully');
+    });
+    
+    // Check if other image files exist, otherwise create placeholders
     this.load.image("pipe_healthy", "assets/images/pipe_healthy.png");
     this.load.image("pipe_damaged", "assets/images/pipe_damaged.png");
     this.load.image("node_on", "assets/images/node_on.png");
@@ -81,6 +87,49 @@ export class PreloaderScene extends Phaser.Scene {
 
     this.load.audio("correct", ["assets/audio/correct.mp3"]);
     this.load.audio("incorrect", ["assets/audio/incorrect.mp3"]);
+    
+    // Handle missing files by creating placeholders
+    this.load.on('loaderror', (file: any) => {
+      console.log('Failed to load:', file.key);
+      this.createPlaceholderForMissing(file.key);
+    });
+  }
+
+  createPlaceholderForMissing(key: string): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 });
+    graphics.setVisible(false);
+
+    switch(key) {
+      case 'pipe_healthy':
+        graphics.fillStyle(0x4ade80, 1);
+        graphics.fillRoundedRect(0, 0, 80, 30, 5);
+        graphics.generateTexture("pipe_healthy", 80, 30);
+        break;
+      case 'pipe_damaged':
+        graphics.fillStyle(0xef4444, 1);
+        graphics.fillRoundedRect(0, 0, 80, 30, 5);
+        graphics.generateTexture("pipe_damaged", 80, 30);
+        break;
+      case 'node_on':
+        graphics.fillStyle(0x22d3ee, 1);
+        graphics.fillCircle(25, 25, 25);
+        graphics.generateTexture("node_on", 50, 50);
+        break;
+      case 'node_off':
+        graphics.fillStyle(0x6b7280, 1);
+        graphics.fillCircle(25, 25, 25);
+        graphics.generateTexture("node_off", 50, 50);
+        break;
+      case 'popup_background':
+        graphics.fillStyle(0xffffff, 0.95);
+        graphics.fillRoundedRect(0, 0, 300, 100, 10);
+        graphics.lineStyle(2, 0x000000, 1);
+        graphics.strokeRoundedRect(0, 0, 300, 100, 10);
+        graphics.generateTexture("popup_background", 300, 100);
+        break;
+    }
+    
+    graphics.destroy();
   }
 
   createPlaceholderAssets(): void {
