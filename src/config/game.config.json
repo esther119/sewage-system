@@ -1,0 +1,108 @@
+{
+  "game": {
+    "width": 800,
+    "height": 600,
+    "backgroundColor": "#2a2a2a"
+  },
+  "simulation": {
+    "initialHealth": 100,
+    "repairHealthBonus": 10,
+    "mismanagementPenalty": 15,
+    "healthDeteriorationRate": 5,
+    "healthColors": {
+      "healthy": 4841088,
+      "warning": 16498468,
+      "critical": 15680580
+    },
+    "healthThresholds": {
+      "warning": 70,
+      "critical": 30
+    }
+  },
+  "network": {
+    "components": [
+      {
+        "id": 1,
+        "type": "pipe",
+        "x": 200,
+        "y": 300,
+        "status": "damaged"
+      },
+      {
+        "id": 2,
+        "type": "node",
+        "x": 300,
+        "y": 300,
+        "flowActive": true
+      },
+      {
+        "id": 3,
+        "type": "pipe",
+        "x": 400,
+        "y": 300,
+        "status": "healthy"
+      },
+      {
+        "id": 4,
+        "type": "pipe",
+        "x": 500,
+        "y": 300,
+        "status": "damaged"
+      },
+      {
+        "id": 5,
+        "type": "node",
+        "x": 600,
+        "y": 300,
+        "flowActive": false
+      },
+      {
+        "id": 6,
+        "type": "pipe",
+        "x": 300,
+        "y": 200,
+        "status": "damaged"
+      },
+      {
+        "id": 7,
+        "type": "pipe",
+        "x": 300,
+        "y": 400,
+        "status": "healthy"
+      },
+      {
+        "id": 8,
+        "type": "pipe",
+        "x": 600,
+        "y": 200,
+        "status": "damaged"
+      }
+    ]
+  },
+  "ui": {
+    "popup": {
+      "duration": 2000,
+      "fadeTime": 500
+    },
+    "healthBar": {
+      "width": 300,
+      "height": 30,
+      "x": 250,
+      "y": 50
+    }
+  },
+  "messages": {
+    "repair": {
+      "success": "Great job! Pipe repaired successfully!",
+      "alreadyHealthy": "This pipe is already in good condition!"
+    },
+    "flow": {
+      "activated": "Water flow activated!",
+      "deactivated": "Water flow stopped!",
+      "warning": "Careful! Check the system pressure!"
+    },
+    "win": "🎉 Congratulations! All pipes repaired! The sewage system is fully operational!",
+    "healthWarning": "⚠️ System health is deteriorating! Repair damaged pipes!",
+    "healthCritical": "🚨 Critical system failure imminent! Act quickly!"
+  }
+}
